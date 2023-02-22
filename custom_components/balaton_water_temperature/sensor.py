@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import logging
 import aiohttp
+import re
+import ast
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -56,8 +58,7 @@ class BalatonWaterTemperature(SensorEntity):
 
             coded_content = await response.content.read()
             content = coded_content.decode()
-            _LOGGER.debug("Response %s", content)
-            first = content.find("[")
-            temp_list = eval(content[first:-1])
+            content_list = re.search(r"\[\[.*\]\]", content, re.S).group()
+            temp_list = ast.literal_eval(content_list)
 
             return [(temp[2]) for temp in temp_list if temp[3] == self.place][0]
