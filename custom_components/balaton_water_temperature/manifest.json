@@ -1,5 +1,5 @@
 {
-  "domain": "balaton_water_temp",
+  "domain": "balaton_water_temperature",
   "name": "Balaton water temperature",
   "version": "0.1.0",
   "config_flow": false,
