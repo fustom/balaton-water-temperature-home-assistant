@@ -90,4 +90,6 @@ class BalatonWaterTemperature(SensorEntity):
             content_list = re.search(r"\[\[.*\]\]", content, re.S).group()
             temp_list = ast.literal_eval(content_list)
 
-            return next((temp[2]) for temp in temp_list if temp[3] == self.place])
+            return next(
+                iter([(temp[2]) for temp in temp_list if temp[3] == self.place])
+            )
