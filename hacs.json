@@ -1,0 +1,9 @@
+
+{
+    "name": "Balaton water temperature",
+    "zip_release": false,
+    "hide_default_branch": false,
+    "render_readme": false,
+    "homeassistant": "2023.1.1"
+  }
+  
