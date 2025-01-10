@@ -7,7 +7,6 @@ from typing import Final
 import logging
 import aiohttp
 import re
-import ast
 import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
@@ -87,7 +86,13 @@ class BalatonWaterTemperature(SensorEntity):
 
             coded_content = await response.content.read()
             content = coded_content.decode()
-            content_list = re.search(r"\[\[.*\]\]", content, re.S).group()
-            temp_list = ast.literal_eval(content_list)
-
-            return next(iter((temp[2]) for temp in temp_list if temp[3] == self.place))
+            p = re.compile(r"\[[^(\[)].*[^(\])]\]")
+            content_list = p.findall(content)
+            for content in content_list:
+                try:
+                    temp = eval(content)
+                    if temp[3] == self.place:
+                        return temp[2]
+                except Exception as ex:
+                    _LOGGER.exception(ex)
+            return 0
